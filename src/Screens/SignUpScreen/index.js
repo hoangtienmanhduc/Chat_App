@@ -10,42 +10,24 @@ import {
 import { Button, Icon, Input } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import axios from "axios";
 import { Api } from "../../Global/Axios/Api";
-import { registerRoute } from "../../utils/APIRoutes";
-// import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
-// import { firebaseConfig } from "../../../firebase";
-// import firebase from 'firebase/compat';
+import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import { firebaseConfig } from "../../FirebaseConfig/firebase";
+import firebase from "firebase/compat/app";
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const SignUpScreen = ({ navigation }) => {
 
-    // const[phoneNumber, setPhoneNumber] = useState('');
-    // const[code, setCode] = useState('');
-    // const[verificationId, setVerificationId] = useState('');
-    // const recaptchaVerifier = useRef(null);
-    
-    // const senVerification = () => {
-    //     const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    //     phoneProvider.verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-    //     .then(setVerificationId);
-    //     setPhoneNumber('');
-    // };
+    const [verificationId, setVerificationId] = useState(null);
+    const recaptchaVerifier = useRef(null);
 
-    // const confirmCode = () =>{
-    //     const credential = firebase.auth.PhoneAuthProvider.credential(
-    //         verificationId,
-    //         code
-    //     );
-    //     firebase.auth().signInWithCredential(credential)
-    //     .then(() => {
-    //         setCode('');
-    //     })
-    //     .catch((error) => {
-    //         alert(error)
-    //     })
-    //     Alert.alert('Login Succesful. Welcome to Chat_App')
-    // }
-       
+    const sendVerification = () => {
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+        phoneProvider.verifyPhoneNumber(input.phonenumber,recaptchaVerifier.current)
+        .then(setVerificationId);
+    }
+    
     const [errorsMsg, setErrorsMsg] = useState("");
     const [input, setInput] = useState({
         username: "",
@@ -67,7 +49,7 @@ const SignUpScreen = ({ navigation }) => {
                 "Vui lòng điền đầy đủ thông tin"
             );
         }
-        else if(input.phonenumber.length > 11 || input.phonenumber.length < 10)
+        else if(input.phonenumber.length > 15 || input.phonenumber.length < 10)
         {
             return Alert.alert(
                 "Lỗi",
@@ -92,10 +74,9 @@ const SignUpScreen = ({ navigation }) => {
     console.log(input);
     const submitData = async (event) => {
         event.preventDefault();
-        // if(validate()==true)
         if(validate()==true){
-            const { phonenumber, username, password } = input;
-        const { data } = await Api.post(`http://192.168.43.98:5000/api/auth/register`, {
+        const { phonenumber, username, password } = input;
+        const { data } = await Api.post(`http://192.168.160.196:5000/api/auth/register`, {
             username,
             phonenumber,
             password,
@@ -115,9 +96,11 @@ const SignUpScreen = ({ navigation }) => {
             // );
             // navigate("/messenger");
         // }
+        sendVerification();
+        navigation.navigate("OtpScreen");
         }
         }
-        navigation.navigate("BottomTabNavigator");
+        
     };
 
     return (
@@ -127,13 +110,17 @@ const SignUpScreen = ({ navigation }) => {
                 resizeMode="cover"
                 style={style.image}
             >
+                <FirebaseRecaptchaVerifierModal 
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+                />
                 <View style={{ alignItems: "center" }}>
                     <Image
                         style={{ width: 250, height: 250 }}
                         source={require("../image/avata.png")}
                     />
                 </View>
-                <Text style={style.title}>Create a accoutnt</Text>
+                <Text style={style.title}>Create a account</Text>
                 <View style={{ marginTop: 10 }}></View>
                 <Input
                     onChangeText={(text) =>
@@ -163,6 +150,7 @@ const SignUpScreen = ({ navigation }) => {
                     }
                     // onChangeText={(e) => handleChange(e)}
                     name="password"
+                    secureTextEntry={true}
                     placeholder="Enter your password"
                     leftIcon={
                         <FontAwesome name="lock" size={24} color="black" />
@@ -175,10 +163,12 @@ const SignUpScreen = ({ navigation }) => {
                     // onChangeText={(e) => handleChange(e)}
                     name="confirmPassword"
                     placeholder="Confirm your password"
+                    secureTextEntry={true}
                     leftIcon={
                         <FontAwesome name="lock" size={24} color="black" />
                     }
                 />
+
                 <Button
                     onPress={submitData}
                     title="SignUp"

@@ -8,7 +8,7 @@ export function MessageScreen() {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Xin chào',
         createdAt: new Date(),
         user: {
           _id: 2,

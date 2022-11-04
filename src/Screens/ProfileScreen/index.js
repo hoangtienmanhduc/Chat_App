@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
     const [edit, setEdit] = useState(true)
     return (
         <View>
@@ -20,7 +20,7 @@ const ProfileScreen = () => {
                     size='xlarge'
                     source={{ uri: 'https://i.pinimg.com/564x/24/21/85/242185eaef43192fc3f9646932fe3b46.jpg' }} />
             </View>
-            <Input label={"Your Name"} value="Đức" disabled={edit} />
+            <Input label={"Your Name"} value="Đức" disaed={edit} />
             <Input label={"Your Date"} value="12-05-2001" disabled={edit} />
             <Input label={"Your Email"} value="hihi@gmail.com" disabled={edit} />
             <Input label={"Your Phone"} value="0334548131" disabled={edit} />
@@ -45,7 +45,7 @@ const ProfileScreen = () => {
             </View>
             <Button
                 title="Logout"
-                 onPress={()=>navigation.navigate("BottomTabNavigator")}
+                onPress={() => navigation.navigate("LoginScreen")}
                 loading={false}
                 loadingProps={{ size: 'small', color: 'white' }}
                 buttonStyle={{

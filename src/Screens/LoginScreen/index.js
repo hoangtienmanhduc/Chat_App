@@ -15,7 +15,7 @@ const LoginScreen = ({navigation}) => {
         //validate()
      
         const {phonenumber,password} = input;
-        const { data } = await Api.post(`http://192.168.43.98:5000/api/auth/login`, { 
+        const { data } = await Api.post(`http://192.168.160.196:5000/api/auth/login`, { 
             phonenumber,
             password,
         });
@@ -57,6 +57,7 @@ const LoginScreen = ({navigation}) => {
              onChangeText={(text) =>
                 setInput({ ...input, password: text })
             }
+            secureTextEntry={true}
                 leftIcon={
                     <FontAwesome
                         name="lock"

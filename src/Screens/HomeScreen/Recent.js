@@ -30,7 +30,7 @@ const navigation = useNavigation()
                     source={{ uri: item.image }} />
                 <ListItem.Content>
                     <ListItem.Title>{item.name}</ListItem.Title>
-                    <Text>hello how are you?</Text>
+                    <Text>Xin chào</Text>
                 </ListItem.Content>
                 <Text>4.00 pm</Text>
             </ListItem>

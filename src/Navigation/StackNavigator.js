@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from "../Screens/LoginScreen";
 import SignUpScreen from "../Screens/SignUpScreen";
 import MessageScreen from "../Screens/MessageSreen";
-// import OtpScreen from "../Screens/OtpScreen"; 
+import OtpScreen from "../Screens/OtpScreen"; 
 import BottomTabNavigator from "./BottomTabNavigator";
 
 
@@ -22,9 +22,9 @@ const StackNavigator = () => {
         options={{headerMode:'none'}}
         name="SignUpScreen" component={SignUpScreen} />
 
-{/* <Stack.Screen 
+<Stack.Screen 
         options={{headerMode:'none'}}
-        name="OtpScreen" component={OtpScreen} /> */}
+        name="OtpScreen" component={OtpScreen} />
 
         <Stack.Screen 
         options={{title:'Chat'}}
